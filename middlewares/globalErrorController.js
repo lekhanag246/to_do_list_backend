@@ -14,7 +14,7 @@ function errorController(error, req, res, next) {
         error.message = "not a valid Id for this field";
         error.isOperational = true;
     }
-    if (error.code == 1100) {
+    if (error.code == 11000) {
         error.errorCode = 400;
         error.status = "fail";
         error.message = `a data with this name is already present , please try again`;
