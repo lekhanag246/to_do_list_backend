@@ -13,7 +13,9 @@ const { CustomError } = require('../utilities/CustomError');
 
 const signUp = asyncErrorHandler(async (req, res, next) => {
     let { email, password, username } = req.body
-    console.log(req.body)
+    if (!email || !password || !username) {
+        throw new CustomError(400, "fail", "username , password , email can't be empty")
+    }
     let user = await userModel.create({ email, password, username });
     if (!user) {
         throw new CustomError(400, "fail", "unable to signup right now . try again .")
