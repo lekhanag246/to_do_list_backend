@@ -1,0 +1,24 @@
+{
+  "name": "to_do_list_backend-main",
+  "version": "1.0.0",
+  "description": "to do list with authentication and authoristaion ",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lekhanag246/to_do_list_backend.git"
+  },
+  "keywords": [
+    "to",
+    "do",
+    "list"
+  ],
+  "author": "pushpa nag",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lekhanag246/to_do_list_backend/issues"
+  },
+  "homepage": "https://github.com/lekhanag246/to_do_list_backend#readme"
+}
