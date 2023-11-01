@@ -13,13 +13,15 @@ const { errorController } = require('./middlewares/globalErrorController');
 const { CustomError } = require('./utilities/CustomError');
 
 //middleware
-app.use(cors());
+app.use(cors({
+    origin: '*',
+    credentials: true,
+    optionSuccessStatus: 200
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.set('view engine', 'ejs')
 // FIXME COOKIE AND CORS
-
-
 
 //routers 
 app.get('/test', (req, res) => {
