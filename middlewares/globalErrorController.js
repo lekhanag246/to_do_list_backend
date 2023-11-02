@@ -17,7 +17,7 @@ function errorController(error, req, res, next) {
     if (error.code == 11000) {
         error.errorCode = 400;
         error.status = "fail";
-        error.message = `a data with this name is already present , please try again`;
+        error.message = `an account with this email already exits , try another one`;
         error.isOperational = true;
     }
 
@@ -28,17 +28,11 @@ function errorController(error, req, res, next) {
             stackTrace: error.stack
         })
     } else {
-        if (error.isOperational) {
-            res.status(error.errorCode).send({
-                status: error.status,
-                message: error.message
-            })
-        } else {
-            res.status(500).send({
-                status: "error",
-                message: "Something went wrong. Please try again."
-            })
-        }
+        res.status(error.errorCode || 500).send({
+            status: error.status || "error",
+            message: error.message || "Something went wrong. Please try again."
+        })
+
     }
 
 }
