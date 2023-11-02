@@ -8,7 +8,7 @@ function errorController(error, req, res, next) {
         error.message = errorMsg;
         error.isOperational = true;
     }
-    if (error.name == "CastError") {
+    if (error.name == "CasteError") {
         error.errorCode = 400;
         error.status = "fail";
         error.message = "not a valid Id for this field";
@@ -28,6 +28,7 @@ function errorController(error, req, res, next) {
             stackTrace: error.stack
         })
     } else {
+        console.log("here", error)
         res.status(error.errorCode || 500).send({
             status: error.status || "error",
             message: error.message || "Something went wrong. Please try again."

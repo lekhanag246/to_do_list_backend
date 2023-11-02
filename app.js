@@ -46,7 +46,6 @@ app.all('*', (req, res, next) => {
 //error handler
 app.use(errorController);
 
-
 app.listen(process.env.PORT, (error) => {
     if (error) {
         console.log(`error creating server ${error.message}`);
