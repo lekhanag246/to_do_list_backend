@@ -1,39 +1,49 @@
+const { CustomError } = require("../utilities/CustomError");
+
 // TODO global error handler
+function validationErrorHandler() {
+    let errorMsg = Object.values(error.errors).map((doc) => doc.message);
+    errorMsg = errorMsg.join(". ")
+    return new CustomError(400, "fail", errorMsg)
+}
+function casteErrorHandler() {
+    return new CustomError(400, "fail", "not a valid Id for this field")
+}
+
+function duplicateErrorHandler() {
+    return new CustomError(400, "fail", `an account with this email already exits , try another one`)
+}
+
 function errorController(error, req, res, next) {
     if (error.name == "ValidationError") {
-        let errorMsg = Object.values(error.errors).map((doc) => doc.message);
-        errorMsg = errorMsg.join(" .")
-        error.errorCode = 400;
-        error.status = "fail";
-        error.message = errorMsg;
-        error.isOperational = true;
+        validationErrorHandler();
     }
     if (error.name == "CasteError") {
-        error.errorCode = 400;
-        error.status = "fail";
-        error.message = "not a valid Id for this field";
-        error.isOperational = true;
+        casteErrorHandler();
     }
     if (error.code == 11000) {
-        error.errorCode = 400;
-        error.status = "fail";
-        error.message = `an account with this email already exits , try another one`;
-        error.isOperational = true;
+        duplicateErrorHandler();
     }
 
     if (process.env.NODE_ENV === "DEVELOPMENT") {
         res.status(error.errorCode || 500).send({
             status: error.status || "error",
-            message: error.message || "something went wrong",
+            message: error.message,
             stackTrace: error.stack
         })
-    } else {
-        console.log("here", error)
-        res.status(error.errorCode || 500).send({
-            status: error.status || "error",
-            message: error.message || "Something went wrong. Please try again."
-        })
-
+    }
+    else {
+        if (error.isOperational == true) {
+            res.status(error.errorCode).send({
+                status: error.status,
+                message: error.message
+            })
+        } else {
+            res.status(500).send({
+                status: "error",
+                message: "Something went wrong. Please try again."
+            })
+        }
     }
 
 }
