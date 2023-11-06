@@ -14,17 +14,31 @@ function duplicateErrorHandler() {
     return new CustomError(400, "fail", `an account with this email already exits , try another one`)
 }
 
+const tokenError = (err) => {
+    return new CustomError(400, "fail", "Invalid signature. please login again")
+}
+
+const tokenExpiredError = (err) => {
+    return new CustomError(400, "fail", "session expired. please login again")
+}
+
+
 function errorController(error, req, res, next) {
     if (error.name == "ValidationError") {
-        validationErrorHandler();
+        error = validationErrorHandler();
     }
     if (error.name == "CasteError") {
-        casteErrorHandler();
+        error = casteErrorHandler();
     }
     if (error.code == 11000) {
-        duplicateErrorHandler();
+        error = duplicateErrorHandler();
     }
-
+    if (error.name == "JsonWebTokenError") {
+        error = tokenError(error)
+    }
+    if (error.name == "TokenExpiredError") {
+        error = tokenExpiredError(error)
+    }
     if (process.env.NODE_ENV === "DEVELOPMENT") {
         res.status(error.errorCode || 500).send({
             status: error.status || "error",

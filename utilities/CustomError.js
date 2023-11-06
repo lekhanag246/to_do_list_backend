@@ -5,6 +5,7 @@ class CustomError extends Error {
         this.errorCode = errorCode;
         this.message = message
         this.isOperational = true;
+        // Error.captureStackTrace(this, this.constructor);
     }
 }
 
