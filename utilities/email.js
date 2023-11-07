@@ -17,7 +17,7 @@ function emailUser(email, content) {
 
     ejs.renderFile(path.join(__dirname, `../views/${content.filename}`), { link: content.link }, (error, data) => {
         if (error) {
-            throw new CustomError("error rendering ejs file " + error.message)
+            throw new CustomError(500, "error", "error rendering ejs file " + error.message)
         }
         let message = {
             from: process.env.MAIL_USER,
@@ -27,7 +27,7 @@ function emailUser(email, content) {
         };
         transporter.sendMail(message, (err) => {
             if (err) {
-                throw new CustomError("error sending email")
+                throw new CustomError(500, "error", "error sending email")
             }
         });
     })

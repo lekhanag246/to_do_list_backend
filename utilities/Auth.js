@@ -28,15 +28,10 @@ function emailContent(token, type) {
 
 const generateTokenVerifyEmail = async (id, email, type) => {
     let token = await tokenModel.create({ userId: id, token: crypto.randomBytes(32).toString('hex') })
-    // console.log(token)
-    if (!token) {
-        throw new CustomError(400, "fail", "error creating token")
-    }
     emailUser(email, emailContent(token.token, type))
 }
 
 const generateAccessToken = (_id) => {
-    // FIXME a process.env.TOKEN_SECRET
     let token = jwt.sign({ _id }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: maxAge });
     return token;
 }
